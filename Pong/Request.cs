@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework.Input;
 using System.Windows.Forms;
 
 namespace Pong
@@ -25,10 +24,12 @@ namespace Pong
 
 		public string RequestData(string sData)
 		{
-			splitData = sData.Split();
-			identifier = splitData[1];
-			content = splitData[2];
-
+			if (sData.Contains(pwd) || sData.Contains(cmd))
+			{
+				splitData = sData.Split(' ');
+				identifier = splitData[0];
+				content = splitData[1];
+			}
 			//server receives a password from the client
 			if (identifier == pwd)
 			{
@@ -43,16 +44,24 @@ namespace Pong
 			//server receives a cmd from the client
 			else if (identifier == cmd)
 			{
-				switch(content)
+				//client sent up command, moves the player object up
+				if (content == "up")
 				{
-					//client sent up command, moves the player object up
-					case "up":
-						SendKe
-						break;
-					//client sent down command, moces the player object down
-					case "down":
-						break;
+					SendKeys.Send(Keys.Up.ToString());
+					rData = "cmd received";
 				}
+				//client sent down command, moces the player object down
+				else if (content == "down")
+				{
+					SendKeys.Send(Keys.Down.ToString());
+					rData = "cmd received";
+				}
+
+				else
+				{
+					rData = "cmd wrong";
+				}
+
 				return rData;
 			}
 

@@ -21,6 +21,7 @@ namespace Pong
 		private Vector2 ballPos;
 		private int scoreP1;
 		private int scoreP2;
+		private int port = 11000;
 
 		public Vector2 P1pos
 		{
@@ -52,7 +53,7 @@ namespace Pong
 			set { scoreP2 = value; }
 		}
 
-		public SocketServer(int port)
+		public SocketServer()
 		{
 			_server = new TcpListener(IPAddress.Any, port);
 			_server.Start();
@@ -98,7 +99,7 @@ namespace Pong
 				Request request = new Request();
 				string requestData = request.RequestData(sData);
 				Response response = new Response(requestData, sWriter, client);
-				respone.SendGameInfo(sWriter, p1pos, p2pos, ballPos, scoreP1, scoreP2);
+				UpdateClient uClient = new UpdateClient(sWriter, p1pos, p2pos, ballPos, scoreP1, scoreP2);
 				// shows content on the console.
 				Console.WriteLine("Client: " + sData);
 				sWriter.WriteLine(responseData);

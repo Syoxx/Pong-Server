@@ -20,9 +20,12 @@ namespace Pong
 
 		public Response(string requestData, StreamWriter sWriter, TcpClient client)
 		{
-			splitData = requestData.Split();
-			command = splitData[1];
-			content = splitData[2];
+			if (requestData.Contains(pwd) || requestData.Contains(cmd))
+			{
+				splitData = requestData.Split(' ');
+				command = splitData[0];
+				content = splitData[1];
+			}
 
 			if (command == pwd)
 			{

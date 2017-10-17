@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Text;
+using System.Threading;
 
 namespace Pong
 {
@@ -17,7 +18,7 @@ namespace Pong
     /// </summary>
     public class Pong : Game
     {
-		private SocketServer server = new SocketServer(11000);
+		private SocketServer server;	
 
         private static Random random = new Random();
         private const int maxScore = 3;
@@ -39,6 +40,11 @@ namespace Pong
         private Texture2D ballTexture;
         private GameState state = GameState.None;
 
+		public void StartServer(object obj)
+		{
+			SocketServer server = (SocketServer)obj;
+			server = new SocketServer();
+		}
         public Pong()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -62,8 +68,10 @@ namespace Pong
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-            base.Initialize();
+			// TODO: Add your initialization logic here
+			Thread sThread = new Thread(new ParameterizedThreadStart(StartServer));
+			sThread.Start(server);
+			base.Initialize();
         }
 
         /// <summary>
@@ -118,8 +126,6 @@ namespace Pong
             }
 
             base.Update(gameTime);
-
-			UpdateClient();
         }
 
         /// <summary>
@@ -168,6 +174,8 @@ namespace Pong
             }
 
             WallCollision(ball);
+
+			UpdateClient();
         }
 
         /// <summary>
