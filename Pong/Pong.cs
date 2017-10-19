@@ -283,13 +283,13 @@ namespace Pong
 
 			else
 			{
-				players[1] = new Player(PlayerIndex.One,
-					new Vector2(0, (graphics.PreferredBackBufferHeight / 2) - (sliderSize.Y / 2)),
+				players[1] = new Player(PlayerIndex.Two,
+					new Vector2(graphics.PreferredBackBufferWidth - sliderSize.X, (graphics.PreferredBackBufferHeight / 2) - (sliderSize.Y / 2)),
 					sliderTexture,
 					sliderSize,
 					Keys.Up,
 					Keys.Down,
-					new Rectangle(-500 - Convert.ToInt32(ballSize.X), -200, 500, graphics.PreferredBackBufferHeight + 400),
+					new Rectangle(graphics.PreferredBackBufferWidth + Convert.ToInt32(ballSize.X), -200, 500, graphics.PreferredBackBufferHeight + 400),
 					0,
 					graphics.PreferredBackBufferHeight);
 			}
