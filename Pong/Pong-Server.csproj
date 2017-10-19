@@ -54,6 +54,7 @@
     <Compile Include="Request.cs" />
     <Compile Include="Response.cs" />
     <Compile Include="Slider.cs" />
+    <Compile Include="SocketClient.cs" />
     <Compile Include="SocketServer.cs" />
     <Compile Include="ThreadShareObject.cs" />
     <Compile Include="UpdateClient.cs" />

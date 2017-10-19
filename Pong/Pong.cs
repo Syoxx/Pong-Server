@@ -40,11 +40,18 @@ namespace Pong
         private Texture2D ballTexture;
         private GameState state = GameState.None;
 		private ThreadShareObject shareObject = new ThreadShareObject();
+		private bool isServer = true;
 
 		public void StartServer(object obj)
 		{
 			ThreadShareObject share = (ThreadShareObject)obj;
 			SocketServer server = new SocketServer(share);
+		}
+
+		public void StartClient(object obj)
+		{
+			ThreadShareObject share = (ThreadShareObject)obj;
+			SocketClient client = new SocketClient(share);
 		}
         public Pong()
         {
@@ -70,8 +77,16 @@ namespace Pong
         protected override void Initialize()
         {
 			// TODO: Add your initialization logic here
-			Thread sThread = new Thread(new ParameterizedThreadStart(StartServer));
-			sThread.Start(shareObject);
+			if (isServer)
+			{
+				Thread sThread = new Thread(new ParameterizedThreadStart(StartServer));
+				sThread.Start(shareObject);
+			}
+			else
+			{
+				Thread cThread = new Thread(new ParameterizedThreadStart(StartClient));
+				cThread.Start(shareObject);
+			}
 			base.Initialize();
         }
 
