@@ -13,9 +13,6 @@ namespace Pong
 	{
 		private TcpListener _server;
 		private Boolean _isRunning;
-		private Request request;
-		private Response respone;
-		private string responseData;
 		private Vector2 p1pos;
 		private Vector2 p2pos;
 		private Vector2 ballPos;

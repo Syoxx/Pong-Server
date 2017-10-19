@@ -15,8 +15,6 @@ namespace Pong
 		string eData = "cmd error";
 		string identifier;
 		private string content;
-		private string command;
-		string passwd;
 		string password = "pongPwd";
 		string correct = "pwd correct";
 		string incorrect = "pwd incorrect";

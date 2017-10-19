@@ -18,11 +18,9 @@ namespace Pong
     /// </summary>
     public class Pong : Game
     {
-		private SocketServer server;	
-
         private static Random random = new Random();
         private const int maxScore = 3;
-        private const string startText = "press space to start the game";
+        private const string startText = "Press P to start as Server, U to start as Client. Game starts when a client connected with the corred password";
 
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
@@ -40,7 +38,8 @@ namespace Pong
         private Texture2D ballTexture;
         private GameState state = GameState.None;
 		private ThreadShareObject shareObject = new ThreadShareObject();
-		private bool isServer = true;
+		private bool isServer;
+		KeyboardState oldState, newState;
 
 		public void StartServer(object obj)
 		{
@@ -77,16 +76,6 @@ namespace Pong
         protected override void Initialize()
         {
 			// TODO: Add your initialization logic here
-			if (isServer)
-			{
-				Thread sThread = new Thread(new ParameterizedThreadStart(StartServer));
-				sThread.Start(shareObject);
-			}
-			else
-			{
-				Thread cThread = new Thread(new ParameterizedThreadStart(StartClient));
-				cThread.Start(shareObject);
-			}
 			base.Initialize();
         }
 
@@ -117,11 +106,27 @@ namespace Pong
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+			newState = Keyboard.GetState();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             if(state != GameState.Started)
             {
+				if (newState.IsKeyDown(Keys.P) && !oldState.IsKeyDown(Keys.P))
+				{
+					Thread sThread = new Thread(new ParameterizedThreadStart(StartServer));
+					sThread.Start(shareObject);
+					isServer = true;
+					drawText = "now running as Server. Waiting for Client to connect";
+				}
+
+				else if (newState.IsKeyDown(Keys.U) && !oldState.IsKeyDown(Keys.U))
+				{
+					Thread cThread = new Thread(new ParameterizedThreadStart(StartClient));
+					cThread.Start(shareObject);
+					isServer = false;
+					drawText = "now running as Client...connecting to server";
+				}
                 if (state == GameState.CountDown)
                 {
                     countdown.Update(gameTime);
@@ -142,6 +147,7 @@ namespace Pong
             }
 
             base.Update(gameTime);
+			oldState = newState;
         }
 
         /// <summary>
@@ -237,24 +243,56 @@ namespace Pong
             Vector2 sliderSize = new Vector2(sliderTexture.Width, sliderTexture.Height);
 
             players = new Player[2];
-            players[0] = new Player(PlayerIndex.One,
-                new Vector2(0, (graphics.PreferredBackBufferHeight / 2) - (sliderSize.Y / 2)),
-                sliderTexture,
-                sliderSize,
-                Keys.W,
-                Keys.S,
-                new Rectangle(-500 - Convert.ToInt32(ballSize.X), -200, 500, graphics.PreferredBackBufferHeight + 400),
-                0,
-                graphics.PreferredBackBufferHeight);
 
-            players[1] = new Player(PlayerIndex.Two,
-                new Vector2(graphics.PreferredBackBufferWidth - sliderSize.X, (graphics.PreferredBackBufferHeight / 2) - (sliderSize.Y / 2)),
-                sliderTexture,
-                sliderSize,
-                shareObject,
-                new Rectangle(graphics.PreferredBackBufferWidth + Convert.ToInt32(ballSize.X), -200, 500, graphics.PreferredBackBufferHeight + 400),
-                0,
-                graphics.PreferredBackBufferHeight);
+			if (isServer)
+			{
+				players[0] = new Player(PlayerIndex.One,
+					new Vector2(0, (graphics.PreferredBackBufferHeight / 2) - (sliderSize.Y / 2)),
+					sliderTexture,
+					sliderSize,
+					Keys.W,
+					Keys.S,
+					new Rectangle(-500 - Convert.ToInt32(ballSize.X), -200, 500, graphics.PreferredBackBufferHeight + 400),
+					0,
+					graphics.PreferredBackBufferHeight);
+			}
+
+			else
+			{
+				players[0] = new Player(PlayerIndex.One,
+					new Vector2(0, (graphics.PreferredBackBufferHeight / 2) - (sliderSize.Y / 2)),
+					sliderTexture,
+					sliderSize,
+					shareObject,
+					new Rectangle(-500 - Convert.ToInt32(ballSize.X), -200, 500, graphics.PreferredBackBufferHeight + 400),
+					0,
+					graphics.PreferredBackBufferHeight);
+			}
+
+			if (isServer)
+			{
+				players[1] = new Player(PlayerIndex.Two,
+					new Vector2(graphics.PreferredBackBufferWidth - sliderSize.X, (graphics.PreferredBackBufferHeight / 2) - (sliderSize.Y / 2)),
+					sliderTexture,
+					sliderSize,
+					shareObject,
+					new Rectangle(graphics.PreferredBackBufferWidth + Convert.ToInt32(ballSize.X), -200, 500, graphics.PreferredBackBufferHeight + 400),
+					0,
+					graphics.PreferredBackBufferHeight);
+			}
+
+			else
+			{
+				players[1] = new Player(PlayerIndex.One,
+					new Vector2(0, (graphics.PreferredBackBufferHeight / 2) - (sliderSize.Y / 2)),
+					sliderTexture,
+					sliderSize,
+					Keys.Up,
+					Keys.Down,
+					new Rectangle(-500 - Convert.ToInt32(ballSize.X), -200, 500, graphics.PreferredBackBufferHeight + 400),
+					0,
+					graphics.PreferredBackBufferHeight);
+			}
 
             players[0].OnLeft += Player_OnLeft;
             players[1].OnLeft += Player_OnLeft;
