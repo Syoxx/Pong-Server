@@ -71,9 +71,9 @@ namespace Pong
 
 		private void UpdateGame(StreamWriter sWriter, ThreadShareObject share)
 		{
-			sWriter.WriteLine("game p1 " + share.P1pos.ToString());
-			sWriter.WriteLine("game p2 " + share.P2pos.ToString());
-			sWriter.WriteLine("game ball " + share.BallPos.ToString());
+			sWriter.WriteLine("game p1 " + share.P1posX.ToString() + " " + share.P1posY.ToString());
+			sWriter.WriteLine("game p2 " + share.P2posX.ToString() + " " + share.P2posY.ToString());
+			sWriter.WriteLine("game ball " + share.BallPosX.ToString() + " " + share.BallPosY.ToString());
 			sWriter.WriteLine("game scoreP1 " + share.ScoreP1.ToString());
 			sWriter.WriteLine("game scoreP2 " + share.ScoreP2.ToString());
 			sWriter.Flush();

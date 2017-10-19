@@ -35,6 +35,7 @@ namespace Pong
 			{
 				if (content == password)
 				{
+					share.PwdAccepted = true;
 					return correct;
 				}
 

@@ -114,7 +114,7 @@ namespace Pong
                 }
                 else
                 {
-                    if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                    if (Keyboard.GetState().IsKeyDown(Keys.Space) || shareObject.PwdAccepted)
                     {
                         state = GameState.Started;
                         SetupGame(ballTexture, sliderTexture);
@@ -326,9 +326,12 @@ namespace Pong
 
 		private void UpdateClient()
 		{
-			shareObject.P1pos = players[0].Slider.Position;
-			shareObject.P2pos = players[1].Slider.Position;
-			shareObject.BallPos = ball.Position;
+			shareObject.P1posX = players[0].Slider.Position.X;
+			shareObject.P1posY = players[0].Slider.Position.Y;
+			shareObject.P2posX = players[1].Slider.Position.X;
+			shareObject.P2posY = players[1].Slider.Position.Y;
+			shareObject.BallPosX = ball.Position.X;
+			shareObject.BallPosY = ball.Position.Y;
 			shareObject.ScoreP1 = players[0].Points;
 			shareObject.ScoreP2 = players[1].Points;
 		}
