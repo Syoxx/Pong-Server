@@ -22,6 +22,7 @@ namespace Pong
 		private int scoreP1;
 		private int scoreP2;
 		private int port = 11000;
+		ThreadShareObject shareObject;
 
 		public Vector2 P1pos
 		{
@@ -53,8 +54,9 @@ namespace Pong
 			set { scoreP2 = value; }
 		}
 
-		public SocketServer()
+		public SocketServer(ThreadShareObject share)
 		{
+			shareObject = share;
 			_server = new TcpListener(IPAddress.Any, port);
 			_server.Start();
 
@@ -95,17 +97,12 @@ namespace Pong
 			{
 				// reads from stream
 				sData = sReader.ReadLine();
-
-				Request request = new Request();
-				string requestData = request.RequestData(sData);
-				Response response = new Response(requestData, sWriter, client);
-				UpdateClient uClient = new UpdateClient(sWriter, p1pos, p2pos, ballPos, scoreP1, scoreP2);
-				// shows content on the console.
 				Console.WriteLine("Client: " + sData);
-				sWriter.WriteLine(responseData);
-				// to write something back.
-				// sWriter.WriteLine("Meaningfull things here");
-				// sWriter.Flush();
+				Request request = new Request();
+				string requestData = request.RequestData(sData, shareObject);
+				Response response = new Response(requestData, sWriter, client, shareObject);
+				//shareObject.Up = false;
+				//shareObject.Down = false;
 			}
 		}
 	}

@@ -10,6 +10,7 @@ namespace Pong
         private PlayerIndex playerInex;
         private Keys upKey;
         private Keys downKey;
+		ThreadShareObject shareObject;
         private Slider slider;
         private int points;
         private Rectangle endZone;
@@ -42,26 +43,40 @@ namespace Pong
             this.upKey = upKey;
             this.downKey = downKey;
             this.endZone = endZone;
+			shareObject = new ThreadShareObject();
         }
 
-        public void Update(GameTime gameTime)
+		public Player(PlayerIndex playerIndex, Vector2 position, Texture2D texture, Vector2 size, ThreadShareObject share, Rectangle endZone, float fieldMinY, float fieldMaxY)
+		{
+			this.playerInex = playerIndex;
+			this.slider = new Slider(position, texture, size, fieldMinY, fieldMaxY);
+			this.points = 0;
+			this.shareObject = share;
+			this.endZone = endZone;
+		}
+
+		public void Update(GameTime gameTime)
         {
             KeyboardState state = Keyboard.GetState();
             GamePadState padState = GamePad.GetState(playerInex);
             slider.ResetMoveVector();
-            if(state.IsKeyDown(upKey) || padState.ThumbSticks.Left.Y < 0)
+            if(state.IsKeyDown(upKey) || padState.ThumbSticks.Left.Y < 0 || shareObject.Up)
             {
                 if (padState.ThumbSticks.Left.Y < 0)
                     slider.Move(-1, padState.ThumbSticks.Left.Y);
                 else
                     slider.Move(-1, 1);
+
+				shareObject.Up = false;
             }
-            if(state.IsKeyDown(downKey) || padState.ThumbSticks.Right.Y > 0)
+            if(state.IsKeyDown(downKey) || padState.ThumbSticks.Right.Y > 0 || shareObject.Down)
             {
                 if (padState.ThumbSticks.Left.Y > 0)
                     slider.Move(1, padState.ThumbSticks.Left.Y);
                 else
                     slider.Move(1,1);
+
+				shareObject.Down = false;
             }
 
             slider.Update(gameTime);

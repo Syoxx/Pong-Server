@@ -7,7 +7,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{4B264E79-8A4D-45FD-862E-B284B4845577}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Pong</RootNamespace>
     <AssemblyName>Pong</AssemblyName>
@@ -40,6 +40,9 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Ball.cs" />
     <Compile Include="Countdown.cs" />
@@ -52,6 +55,7 @@
     <Compile Include="Response.cs" />
     <Compile Include="Slider.cs" />
     <Compile Include="SocketServer.cs" />
+    <Compile Include="ThreadShareObject.cs" />
     <Compile Include="UpdateClient.cs" />
   </ItemGroup>
   <ItemGroup>

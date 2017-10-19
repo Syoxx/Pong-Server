@@ -39,11 +39,12 @@ namespace Pong
         private Texture2D sliderTexture;
         private Texture2D ballTexture;
         private GameState state = GameState.None;
+		private ThreadShareObject shareObject = new ThreadShareObject();
 
 		public void StartServer(object obj)
 		{
-			SocketServer server = (SocketServer)obj;
-			server = new SocketServer();
+			ThreadShareObject share = (ThreadShareObject)obj;
+			SocketServer server = new SocketServer(share);
 		}
         public Pong()
         {
@@ -70,7 +71,7 @@ namespace Pong
         {
 			// TODO: Add your initialization logic here
 			Thread sThread = new Thread(new ParameterizedThreadStart(StartServer));
-			sThread.Start(server);
+			sThread.Start(shareObject);
 			base.Initialize();
         }
 
@@ -235,8 +236,7 @@ namespace Pong
                 new Vector2(graphics.PreferredBackBufferWidth - sliderSize.X, (graphics.PreferredBackBufferHeight / 2) - (sliderSize.Y / 2)),
                 sliderTexture,
                 sliderSize,
-                Keys.Up,
-                Keys.Down,
+                shareObject,
                 new Rectangle(graphics.PreferredBackBufferWidth + Convert.ToInt32(ballSize.X), -200, 500, graphics.PreferredBackBufferHeight + 400),
                 0,
                 graphics.PreferredBackBufferHeight);
@@ -326,11 +326,11 @@ namespace Pong
 
 		private void UpdateClient()
 		{
-			server.P1pos = players[0].Slider.Position;
-			server.P2pos = players[1].Slider.Position;
-			server.BallPos = ball.Position;
-			server.ScoreP1 = players[0].Points;
-			server.ScoreP2 = players[1].Points;
+			shareObject.P1pos = players[0].Slider.Position;
+			shareObject.P2pos = players[1].Slider.Position;
+			shareObject.BallPos = ball.Position;
+			shareObject.ScoreP1 = players[0].Points;
+			shareObject.ScoreP2 = players[1].Points;
 		}
     }
 }

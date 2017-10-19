@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using Microsoft.Xna.Framework.Input;
 
 namespace Pong
 {
@@ -22,7 +22,7 @@ namespace Pong
 		string incorrect = "pwd incorrect";
 		private string[] splitData;
 
-		public string RequestData(string sData)
+		public string RequestData(string sData, ThreadShareObject share)
 		{
 			if (sData.Contains(pwd) || sData.Contains(cmd))
 			{
@@ -47,14 +47,20 @@ namespace Pong
 				//client sent up command, moves the player object up
 				if (content == "up")
 				{
-					SendKeys.Send(Keys.Up.ToString());
-					rData = "cmd received";
+					share.Up = true;
+					rData = "cmd accepted";
 				}
 				//client sent down command, moces the player object down
 				else if (content == "down")
 				{
-					SendKeys.Send(Keys.Down.ToString());
-					rData = "cmd received";
+					//SendKeys.Send(Keys.Down.ToString());
+					share.Down = true;
+					rData = "cmd accepted";
+				}
+
+				else if (content == "update")
+				{
+					rData = "cmd update";
 				}
 
 				else
