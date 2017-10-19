@@ -52,24 +52,31 @@ namespace Pong
 				{
 					sWriter.WriteLine("cmd accepted");
 					sWriter.Flush();
+					UpdateGame(sWriter, share);
 				}
 
 				else if (content == "error")
 				{
 					sWriter.WriteLine("cmd rejected");
 					sWriter.Flush();
+					UpdateGame(sWriter, share);
 				}
 
 				else if (content == "update")
 				{
-					sWriter.WriteLine("game p1 " + share.P1pos.ToString());
-					sWriter.WriteLine("game p2 " + share.P2pos.ToString());
-					sWriter.WriteLine("game ball " + share.BallPos.ToString());
-					sWriter.WriteLine("game scoreP1 " + share.ScoreP1.ToString());
-					sWriter.WriteLine("game scoreP2 " + share.ScoreP2.ToString());
-					sWriter.Flush();
+					UpdateGame(sWriter, share);
 				}
 			}
+		}
+
+		private void UpdateGame(StreamWriter sWriter, ThreadShareObject share)
+		{
+			sWriter.WriteLine("game p1 " + share.P1pos.ToString());
+			sWriter.WriteLine("game p2 " + share.P2pos.ToString());
+			sWriter.WriteLine("game ball " + share.BallPos.ToString());
+			sWriter.WriteLine("game scoreP1 " + share.ScoreP1.ToString());
+			sWriter.WriteLine("game scoreP2 " + share.ScoreP2.ToString());
+			sWriter.Flush();
 		}
 	}
 }
