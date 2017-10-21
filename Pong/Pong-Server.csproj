@@ -56,6 +56,8 @@
     <Compile Include="Slider.cs" />
     <Compile Include="SocketClient.cs" />
     <Compile Include="SocketServer.cs" />
+    <Compile Include="StreamInClient.cs" />
+    <Compile Include="StreamOutClient.cs" />
     <Compile Include="ThreadShareObject.cs" />
   </ItemGroup>
   <ItemGroup>
