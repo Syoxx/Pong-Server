@@ -18,8 +18,16 @@ namespace Pong
 		private string command;
 		private string content;
 
+		/// <summary>
+		/// generates a response to the client based on the incoming data and sends updates to the client
+		/// </summary>
+		/// <param name="requestData">analysed data from the request class</param>
+		/// <param name="sWriter">stream writer</param>
+		/// <param name="client">tcp client</param>
+		/// <param name="share">thread share object with updated game information</param>
 		public Response(string requestData, StreamWriter sWriter, TcpClient client, ThreadShareObject share)
 		{
+			//splits incoming data
 			if (requestData.Contains(pwd) || requestData.Contains(cmd))
 			{
 				splitData = requestData.Split(' ');
@@ -27,6 +35,7 @@ namespace Pong
 				content = splitData[1];
 			}
 
+			//response to the transmitted password
 			if (command == pwd)
 			{
 				if (content == "correct")
@@ -45,7 +54,7 @@ namespace Pong
 				}
 			}
 
-			//when a cmd was sent by the client the server sends all game informations back
+			//response to the transmitted command
 			else if (command == cmd)
 			{
 				if (content == "accepted")
@@ -69,6 +78,11 @@ namespace Pong
 			}
 		}
 
+		/// <summary>
+		/// sends the game informations to the client, information passed via the thread share object
+		/// </summary>
+		/// <param name="sWriter">streamwriter</param>
+		/// <param name="share">thread share object for the needed informations</param>
 		private void UpdateGame(StreamWriter sWriter, ThreadShareObject share)
 		{
 			sWriter.WriteLine("game p1 " + share.P1posX.ToString() + " " + share.P1posY.ToString());

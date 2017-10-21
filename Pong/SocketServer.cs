@@ -95,6 +95,7 @@ namespace Pong
 				// reads from stream
 				sData = sReader.ReadLine();
 				Console.WriteLine("Client: " + sData);
+				//initiates the request
 				Request request = new Request();
 				string requestData = request.RequestData(sData, shareObject);
 				Response response = new Response(requestData, sWriter, client, shareObject);
