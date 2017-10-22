@@ -22,6 +22,8 @@ namespace Pong
 		{
 			// Data buffer for incoming data.
 			byte[] bytes = new byte[1024];
+            Boolean isServer = false;
+
 			//IPAddress ip = { '127.0.0.1' };
 
 			// Connect to a remote device.
@@ -63,8 +65,8 @@ namespace Pong
 					// Send the data through the socket.
 					cConnected = true;
 
-					// Receive the response from the remote device.
-					while (cConnected)
+                    // Receive the response from the remote device.
+                    while (cConnected)
 					{
 						sData = sReader.ReadLine();
 						StreamInClient sIn = new StreamInClient();
@@ -77,8 +79,8 @@ namespace Pong
 
                         while(state != GameState.Started)
                         {
-                            string cPwd = Console.ReadLine();
-                            sWriter.WriteLine(cPwd);
+                            //string cPwd = Console.ReadLine();
+                            sWriter.WriteLine("pongPwd");
                             sWriter.Flush();
                             state = GameState.Started;
                         }

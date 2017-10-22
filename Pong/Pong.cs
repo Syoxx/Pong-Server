@@ -40,6 +40,8 @@ namespace Pong
 		private ThreadShareObject shareObject = new ThreadShareObject();
 		private bool isServer;
 		KeyboardState oldState, newState;
+        Boolean serverRunning = false;
+        Boolean clientRunning = false;
 
 		/// <summary>
 		/// initiates the server
@@ -121,20 +123,22 @@ namespace Pong
             if(state != GameState.Started)
             {
 				//option to select to function as host
-				if (newState.IsKeyDown(Keys.P) && !oldState.IsKeyDown(Keys.P))
+				if (newState.IsKeyDown(Keys.P) && !oldState.IsKeyDown(Keys.P) && !clientRunning)
 				{
 					Thread sThread = new Thread(new ParameterizedThreadStart(StartServer));
 					sThread.Start(shareObject);
 					isServer = true;
+                    serverRunning = true;
 					drawText = "now running as Server. Waiting for Client to connect";
 				}
 
 				//option to select to function as client
-				else if (newState.IsKeyDown(Keys.U) && !oldState.IsKeyDown(Keys.U))
+				else if (newState.IsKeyDown(Keys.U) && !oldState.IsKeyDown(Keys.U) && !serverRunning)
 				{
 					Thread cThread = new Thread(new ParameterizedThreadStart(StartClient));
 					cThread.Start(shareObject);
 					isServer = false;
+                    clientRunning = true;
 					drawText = "now running as Client...connecting to server";
 				}
                 if (state == GameState.CountDown)
