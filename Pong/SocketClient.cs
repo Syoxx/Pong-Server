@@ -56,7 +56,7 @@ namespace Pong
 					rEncoding = sReader.CurrentEncoding;
 					Console.WriteLine(rEncoding.ToString());
 					//replace "hello" with pwd transmission?
-					sWriter.WriteLine("hello");
+					sWriter.WriteLine("pwd pongPwd");
 					sWriter.Flush();
 					data = sReader.ReadLine();
 					Console.WriteLine(data);
@@ -74,35 +74,37 @@ namespace Pong
                         //sends a new msg out
                         StreamOutClient sOut = new StreamOutClient();
 
-                        
 
-                        if(share.state == GameState.None)
+
+                        //if(share.State == GameState.None)
+                        //{
+                        //    //string cPwd = Console.ReadLine();
+                        //    sWriter.WriteLine("pwd pongPwd");
+                        //    sWriter.Flush(); 
+                        //}
+
+                        if (shareObject.Up == true)
                         {
-                            //string cPwd = Console.ReadLine();
-                            sWriter.WriteLine("pwd pongPwd");
-                            sWriter.Flush(); 
+                            sWriter.WriteLine("cmd up");
+                            sWriter.Flush();
+                            shareObject.Up = false;
+                        }
+                        else if (shareObject.Down == true)
+                        {
+                            sWriter.WriteLine("cmd down");
+                            sWriter.Flush();
+                            shareObject.Down = false;
+                        }
+                        else if (shareObject.Up == false && shareObject.Down == false)
+                        {
+                            sWriter.WriteLine("cmd update");
+                            sWriter.Flush();
                         }
 
-                        while(share.state == GameState.Started)
-                        {
-                            if (shareObject.Up == true)
-                            {
-                                sWriter.WriteLine("cmd up");
-                                sWriter.Flush();
-                                shareObject.Up = false;
-                            }
-                            else if (shareObject.Down == true)
-                            {
-                                sWriter.WriteLine("cmd down");
-                                sWriter.Flush();
-                                shareObject.Down = false;
-                            }
-                            else if (shareObject.Up == false && shareObject.Down == false)
-                            {
-                                sWriter.WriteLine("cmd update");
-                                sWriter.Flush();
-                            }
-                        }
+                        //while (share.State == GameState.Started)
+                        //{
+                            
+                        //}
                     }
 
 				}

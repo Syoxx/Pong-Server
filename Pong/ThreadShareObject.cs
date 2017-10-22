@@ -14,6 +14,7 @@ namespace Pong
     /// </summary>
     public class ThreadShareObject
     {
+        GameState state;
         public float p1posX;
         public float p1posY;
         public float p2posX;
@@ -92,7 +93,7 @@ namespace Pong
             set { down = value; }
         }
 
-        public GameState state
+        public GameState State
         {
             get { return state; }
             set { state = value; }

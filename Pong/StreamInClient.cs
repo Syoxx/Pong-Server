@@ -25,10 +25,16 @@ namespace Pong
 
 		public string InData(string sData, ThreadShareObject share)
 		{
-			if (sData.Contains(pwd) || sData.Contains(cmd))
-			{
-				Console.WriteLine(sData);
-				rData = "cmd or password answer";
+            if (sData.Contains(pwd) || sData.Contains(cmd))
+            {
+                Console.WriteLine(sData);
+                rData = "cmd or password answer";
+
+                splitData = sData.Split(' ');
+                if (splitData[0] == "pwd" && splitData[1] == "accepted")
+                {
+                    share.pwdAccepted = true;
+                }
 			}
 
 			//store the values transmitted via game in the thread share object
