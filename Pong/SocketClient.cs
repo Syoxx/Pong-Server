@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Net;
 using System.Net.Sockets;
 
 namespace Pong
 {
-	class SocketClient
+    class SocketClient
 	{
 		private bool cConnected;
 		private Encoding rEncoding;
@@ -70,21 +68,19 @@ namespace Pong
 						StreamInClient sIn = new StreamInClient();
 						//analyzes the incoming data and stores return value
 						rData = sIn.InData(sData, share);
-                        //sends a new msg out
-                        StreamOutClient sOut = new StreamOutClient();
 
                         //sends the outgoing commands for moving the slider
                             if (share.UpKey == true)
                             {
                                 sWriter.WriteLine("cmd up");
                                 sWriter.Flush();
-                                share.Up = false;
+                                share.UpKey = false;
                             }
                             else if (share.DownKey == true)
                             {
                                 sWriter.WriteLine("cmd down");
                                 sWriter.Flush();
-                                share.Down = false;
+                                share.DownKey = false;
                             }
                             else if (share.UpKey == false && share.DownKey == false)
                             {
