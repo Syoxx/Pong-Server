@@ -120,7 +120,7 @@ namespace Pong
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            if(state != GameState.Started)
+            if(shareObject.state != GameState.Started)
             {
 				//option to select to function as host
 				if (newState.IsKeyDown(Keys.P) && !oldState.IsKeyDown(Keys.P) && !clientRunning)
@@ -141,7 +141,7 @@ namespace Pong
                     clientRunning = true;
 					drawText = "now running as Client...connecting to server";
 				}
-                if (state == GameState.CountDown)
+                if (shareObject.state == GameState.CountDown)
                 {
                     countdown.Update(gameTime);
 
@@ -152,7 +152,7 @@ namespace Pong
                 {
                     if (Keyboard.GetState().IsKeyDown(Keys.Space) || shareObject.PwdAccepted)
                     {
-                        state = GameState.Started;
+                        shareObject.state = GameState.Started;
                         SetupGame(ballTexture, sliderTexture);
                     }
                 }
@@ -176,7 +176,7 @@ namespace Pong
 
             spriteBatch.Begin();
             spriteBatch.Draw(background, field, Color.White);
-            if (state == GameState.Started || state == GameState.CountDown)
+            if (shareObject.state == GameState.Started || shareObject.state == GameState.CountDown)
             {
                 for (int i = 0; i < players.Length; i++)
                 {
@@ -185,7 +185,7 @@ namespace Pong
 
                 ball.Draw(spriteBatch);
 
-                if (state == GameState.CountDown)
+                if (shareObject.state == GameState.CountDown)
                     countdown.Draw(spriteBatch);
 
                 DrawScore();
@@ -241,7 +241,7 @@ namespace Pong
                 if(players[i].Points >= maxScore)
                 {
                     drawText = "Player " + (i + 1).ToString() + " won (Press space to restart)!";
-                    state = GameState.GameOver;
+                    shareObject.state = GameState.GameOver;
                     return;
                 }
             }
@@ -324,7 +324,7 @@ namespace Pong
         /// </summary>
         private void ResetPositions()
         {
-            state = GameState.CountDown;
+            shareObject.state = GameState.CountDown;
             for (int i = 0; i < players.Length; i++)
             {
                 players[i].Slider.ResetPosition();
@@ -359,7 +359,7 @@ namespace Pong
         /// <param name="e"></param>
         private void Countdown_OnCountdownElapsed(object sender, EventArgs e)
         {
-            state = GameState.Started;
+            shareObject.state = GameState.Started;
         }
 
         /// <summary>

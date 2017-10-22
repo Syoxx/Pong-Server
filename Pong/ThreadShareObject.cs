@@ -7,90 +7,96 @@ using Microsoft.Xna.Framework;
 
 namespace Pong
 {
-	/// <summary>
-	/// class to share information between the threads(game and server/client) via getter/setter
-	/// it is accessible from the game and the server/client
-	/// stores the informations regarding players/ball/score
-	/// </summary>
-	public class ThreadShareObject
-	{
-		public float p1posX;
-		public float p1posY;
-		public float p2posX;
-		public float p2posY;
-		public float ballPosX;
-		public float ballPosY;
-		public int scoreP1;
-		public int scoreP2;
-		public bool up;
-		public bool down;
-		public bool pwdAccepted;
+    /// <summary>
+    /// class to share information between the threads(game and server/client) via getter/setter
+    /// it is accessible from the game and the server/client
+    /// stores the informations regarding players/ball/score
+    /// </summary>
+    public class ThreadShareObject
+    {
+        public float p1posX;
+        public float p1posY;
+        public float p2posX;
+        public float p2posY;
+        public float ballPosX;
+        public float ballPosY;
+        public int scoreP1;
+        public int scoreP2;
+        public bool up;
+        public bool down;
+        public bool pwdAccepted;
 
-		public bool PwdAccepted
-		{
-			get { return pwdAccepted; }
-			set { pwdAccepted = value; }
-		}
+        public bool PwdAccepted
+        {
+            get { return pwdAccepted; }
+            set { pwdAccepted = value; }
+        }
 
-		public float P1posX
-		{
-			get { return p1posX; }
-			set { p1posX = value; }
-		}
+        public float P1posX
+        {
+            get { return p1posX; }
+            set { p1posX = value; }
+        }
 
-		public float P1posY
-		{
-			get { return p1posY; }
-			set { p1posY = value; }
-		}
+        public float P1posY
+        {
+            get { return p1posY; }
+            set { p1posY = value; }
+        }
 
-		public float P2posX
-		{
-			get { return p2posX; }
-			set { p2posX = value; }
-		}
+        public float P2posX
+        {
+            get { return p2posX; }
+            set { p2posX = value; }
+        }
 
-		public float P2posY
-		{
-			get { return p2posY; }
-			set { p2posY = value; }
-		}
+        public float P2posY
+        {
+            get { return p2posY; }
+            set { p2posY = value; }
+        }
 
-		public float BallPosX
-		{
-			get { return ballPosX; }
-			set { ballPosX = value; }
-		}
+        public float BallPosX
+        {
+            get { return ballPosX; }
+            set { ballPosX = value; }
+        }
 
-		public float BallPosY
-		{
-			get { return ballPosY; }
-			set { ballPosY = value; }
-		}
+        public float BallPosY
+        {
+            get { return ballPosY; }
+            set { ballPosY = value; }
+        }
 
-		public int ScoreP1
-		{
-			get { return scoreP1; }
-			set { scoreP1 = value; }
-		}
+        public int ScoreP1
+        {
+            get { return scoreP1; }
+            set { scoreP1 = value; }
+        }
 
-		public int ScoreP2
-		{
-			get { return scoreP2; }
-			set { scoreP2 = value; }
-		}
+        public int ScoreP2
+        {
+            get { return scoreP2; }
+            set { scoreP2 = value; }
+        }
 
-		public bool Up
-		{
-			get { return up; }
-			set { up = value; }
-		}
+        public bool Up
+        {
+            get { return up; }
+            set { up = value; }
+        }
 
-		public bool Down
-		{
-			get { return down; }
-			set { down = value; }
-		}
+        public bool Down
+        {
+            get { return down; }
+            set { down = value; }
+        }
+
+        public GameState state
+        {
+            get { return state; }
+            set { state = value; }
+        }
 
 		public ThreadShareObject()
 		{

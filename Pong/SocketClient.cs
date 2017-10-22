@@ -22,7 +22,6 @@ namespace Pong
 		{
 			// Data buffer for incoming data.
 			byte[] bytes = new byte[1024];
-            Boolean isServer = false;
 
 			//IPAddress ip = { '127.0.0.1' };
 
@@ -75,17 +74,16 @@ namespace Pong
                         //sends a new msg out
                         StreamOutClient sOut = new StreamOutClient();
 
-                        GameState state = GameState.None;
+                        
 
-                        while(state != GameState.Started)
+                        if(share.state == GameState.None)
                         {
                             //string cPwd = Console.ReadLine();
-                            sWriter.WriteLine("pongPwd");
-                            sWriter.Flush();
-                            state = GameState.Started;
+                            sWriter.WriteLine("pwd pongPwd");
+                            sWriter.Flush(); 
                         }
 
-                        while(state == GameState.Started)
+                        while(share.state == GameState.Started)
                         {
                             if (shareObject.Up == true)
                             {
