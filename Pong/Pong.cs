@@ -20,7 +20,7 @@ namespace Pong
     {
         private static Random random = new Random();
         private const int maxScore = 3;
-        private const string startText = "Press P to start as Server, U to start as Client. Game starts when a client connected with the corred password";
+        private const string startText = "Press P to start as Server, U to start as Client. Game starts when a client connected with the correct password";
 
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
@@ -42,12 +42,13 @@ namespace Pong
 		KeyboardState oldState, newState;
         Boolean serverRunning = false;
         Boolean clientRunning = false;
+        private ThreadShareObject share;
 
-		/// <summary>
-		/// initiates the server
-		/// </summary>
-		/// <param name="obj">used to pass the thread share object to the server</param>
-		public void StartServer(object obj)
+        /// <summary>
+        /// initiates the server
+        /// </summary>
+        /// <param name="obj">used to pass the thread share object to the server</param>
+        public void StartServer(object obj)
 		{
 			ThreadShareObject share = (ThreadShareObject)obj;
 			SocketServer server = new SocketServer(share);
@@ -263,12 +264,13 @@ namespace Pong
 			//determines which player is controllable, left by server, right by client
 			if (isServer)
 			{
-				players[0] = new Player(PlayerIndex.One,
-					new Vector2(0, (graphics.PreferredBackBufferHeight / 2) - (sliderSize.Y / 2)),
-					sliderTexture,
-					sliderSize,
-					Keys.W,
-					Keys.S,
+                players[0] = new Player(PlayerIndex.One,
+                    new Vector2(0, (graphics.PreferredBackBufferHeight / 2) - (sliderSize.Y / 2)),
+                    sliderTexture,
+                    sliderSize,
+                    Keys.W,
+                    Keys.S,
+                    share,
 					new Rectangle(-500 - Convert.ToInt32(ballSize.X), -200, 500, graphics.PreferredBackBufferHeight + 400),
 					0,
 					graphics.PreferredBackBufferHeight);
@@ -306,6 +308,7 @@ namespace Pong
 					sliderSize,
 					Keys.Up,
 					Keys.Down,
+                    share,
 					new Rectangle(graphics.PreferredBackBufferWidth + Convert.ToInt32(ballSize.X), -200, 500, graphics.PreferredBackBufferHeight + 400),
 					0,
 					graphics.PreferredBackBufferHeight);

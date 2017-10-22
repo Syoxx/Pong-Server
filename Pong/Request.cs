@@ -34,6 +34,7 @@ namespace Pong
 				identifier = splitData[0];
 				content = splitData[1];
 			}
+
 			//server receives a password from the client
 			if (identifier == pwd)
 			{

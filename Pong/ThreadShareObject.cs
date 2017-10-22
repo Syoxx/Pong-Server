@@ -26,6 +26,8 @@ namespace Pong
         public bool up;
         public bool down;
         public bool pwdAccepted;
+        public bool upKey;
+        public bool downKey;
 
         public bool PwdAccepted
         {
@@ -91,6 +93,18 @@ namespace Pong
         {
             get { return down; }
             set { down = value; }
+        }
+
+        public bool UpKey
+        {
+            get { return upKey; }
+            set { upKey = value; }
+        }
+
+        public bool DownKey
+        {
+            get { return downKey; }
+            set { downKey = value; }
         }
 
         public GameState State

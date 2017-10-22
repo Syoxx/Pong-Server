@@ -54,8 +54,9 @@ namespace Pong
 		public SocketServer(ThreadShareObject share)
 		{
 			shareObject = share;
-			_server = new TcpListener(IPAddress.Any, port);
-			_server.Start();
+            //_server = new TcpListener(IPAddress.Any, port);
+            _server = new TcpListener(IPAddress.Parse("127.0.0.1"), port);
+            _server.Start();
 
 			_isRunning = true;
 

@@ -31,8 +31,9 @@ namespace Pong
 				// This example uses port 11000 on the local computer.
 				IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName());
 
-				IPAddress ipAddress = ipHostInfo.AddressList[0];
-				IPEndPoint remoteEP = new IPEndPoint(ipAddress, 11000);
+                //IPAddress ipAddress = ipHostInfo.AddressList[0];
+                IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
+                IPEndPoint remoteEP = new IPEndPoint(ipAddress, 11000);
 
 				// Create a TCP/IP  socket.
 				Socket sender = new Socket(AddressFamily.InterNetwork,
@@ -67,42 +68,32 @@ namespace Pong
 						sData = sReader.ReadLine();
 						Console.WriteLine(sData);
 						StreamInClient sIn = new StreamInClient();
-						//analyzes  the incoming data and stores return value, mostly done i guess
+						//analyzes the incoming data and stores return value
 						rData = sIn.InData(sData, share);
                         //sends a new msg out
                         StreamOutClient sOut = new StreamOutClient();
 
-
-
-                        //if(share.State == GameState.None)
-                        //{
-                        //    //string cPwd = Console.ReadLine();
-                        //    sWriter.WriteLine("pwd pongPwd");
-                        //    sWriter.Flush(); 
-                        //}
-
-                        if (share.Up == true)
+                        //sends the outgoing commands for moving the slider
+                        while (share.State == GameState.Started)
                         {
-                            sWriter.WriteLine("cmd up");
-                            sWriter.Flush();
-                            share.Up = false;
+                            if (share.UpKey == true)
+                            {
+                                sWriter.WriteLine("cmd up");
+                                sWriter.Flush();
+                                share.Up = false;
+                            }
+                            else if (share.DownKey == true)
+                            {
+                                sWriter.WriteLine("cmd down");
+                                sWriter.Flush();
+                                share.Down = false;
+                            }
+                            else if (share.UpKey == false && share.DownKey == false)
+                            {
+                                sWriter.WriteLine("cmd update");
+                                sWriter.Flush();
+                            }
                         }
-                        else if (share.Down == true)
-                        {
-                            sWriter.WriteLine("cmd down");
-                            sWriter.Flush();
-                            share.Down = false;
-                        }
-                        else if (share.Up == false && share.Down == false)
-                        {
-                            sWriter.WriteLine("cmd update");
-                            sWriter.Flush();
-                        }
-
-                        //while (share.State == GameState.Started)
-                        //{
-                            
-                        //}
                     }
 
 				}

@@ -35,7 +35,7 @@ namespace Pong
             { return playerInex; }
         }
 
-        public Player(PlayerIndex playerIndex, Vector2 position, Texture2D texture, Vector2 size, Keys upKey, Keys downKey, Rectangle endZone, float fieldMinY, float fieldMaxY)
+        public Player(PlayerIndex playerIndex, Vector2 position, Texture2D texture, Vector2 size, Keys upKey, Keys downKey, ThreadShareObject share, Rectangle endZone, float fieldMinY, float fieldMaxY)
         {
             this.playerInex = playerIndex;
             this.slider = new Slider(position, texture, size, fieldMinY, fieldMaxY);
@@ -43,7 +43,7 @@ namespace Pong
             this.upKey = upKey;
             this.downKey = downKey;
             this.endZone = endZone;
-			shareObject = new ThreadShareObject();
+            this.shareObject = share;
         }
 
 		public Player(PlayerIndex playerIndex, Vector2 position, Texture2D texture, Vector2 size, ThreadShareObject share, Rectangle endZone, float fieldMinY, float fieldMaxY)
