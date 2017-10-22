@@ -16,6 +16,7 @@ namespace Pong
 		private Encoding sEncoding;
 		private string sData;
 		private string rData;
+        ThreadShareObject shareObject;
 
 		public SocketClient(ThreadShareObject share)
 		{
@@ -69,10 +70,40 @@ namespace Pong
 						StreamInClient sIn = new StreamInClient();
 						//analyzes  the incoming data and stores return value, mostly done i guess
 						rData = sIn.InData(sData, share);
-						//sends a new msg out not done yet
-						StreamOutClient sOut = new StreamOutClient();
+                        //sends a new msg out
+                        StreamOutClient sOut = new StreamOutClient();
 
-					}
+                        GameState state = GameState.None;
+
+                        while(state != GameState.Started)
+                        {
+                            string cPwd = Console.ReadLine();
+                            sWriter.WriteLine(cPwd);
+                            sWriter.Flush();
+                            state = GameState.Started;
+                        }
+
+                        while(state == GameState.Started)
+                        {
+                            if (shareObject.Up == true)
+                            {
+                                sWriter.WriteLine("cmd up");
+                                sWriter.Flush();
+                                shareObject.Up = false;
+                            }
+                            else if (shareObject.Down == true)
+                            {
+                                sWriter.WriteLine("cmd down");
+                                sWriter.Flush();
+                                shareObject.Down = false;
+                            }
+                            else if (shareObject.Up == false && shareObject.Down == false)
+                            {
+                                sWriter.WriteLine("cmd update");
+                                sWriter.Flush();
+                            }
+                        }
+                    }
 
 				}
 				catch (ArgumentNullException ane)

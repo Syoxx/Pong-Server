@@ -45,8 +45,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Ball.cs" />
-    <Compile Include="ClientDataHandler.cs" />
-    <Compile Include="ClientPlayer.cs" />
     <Compile Include="Countdown.cs" />
     <Compile Include="Pong.cs" />
     <Compile Include="GameState.cs" />
