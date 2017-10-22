@@ -41,12 +41,20 @@ namespace Pong
 		private bool isServer;
 		KeyboardState oldState, newState;
 
+		/// <summary>
+		/// initiates the server
+		/// </summary>
+		/// <param name="obj">used to pass the thread share object to the server</param>
 		public void StartServer(object obj)
 		{
 			ThreadShareObject share = (ThreadShareObject)obj;
 			SocketServer server = new SocketServer(share);
 		}
 
+		/// <summary>
+		/// initiates the client
+		/// </summary>
+		/// <param name="obj">used to pass the thread share object to the server</param>
 		public void StartClient(object obj)
 		{
 			ThreadShareObject share = (ThreadShareObject)obj;
@@ -112,6 +120,7 @@ namespace Pong
 
             if(state != GameState.Started)
             {
+				//option to select to function as host
 				if (newState.IsKeyDown(Keys.P) && !oldState.IsKeyDown(Keys.P))
 				{
 					Thread sThread = new Thread(new ParameterizedThreadStart(StartServer));
@@ -120,6 +129,7 @@ namespace Pong
 					drawText = "now running as Server. Waiting for Client to connect";
 				}
 
+				//option to select to function as client
 				else if (newState.IsKeyDown(Keys.U) && !oldState.IsKeyDown(Keys.U))
 				{
 					Thread cThread = new Thread(new ParameterizedThreadStart(StartClient));
@@ -132,6 +142,8 @@ namespace Pong
                     countdown.Update(gameTime);
 
                 }
+
+				//starts the game, when the client sent the correct password
                 else
                 {
                     if (Keyboard.GetState().IsKeyDown(Keys.Space) || shareObject.PwdAccepted)
@@ -244,6 +256,7 @@ namespace Pong
 
             players = new Player[2];
 
+			//determines which player is controllable, left by server, right by client
 			if (isServer)
 			{
 				players[0] = new Player(PlayerIndex.One,
@@ -377,6 +390,10 @@ namespace Pong
             spriteBatch.DrawString(font, drawText, textPosition, Color.White);
         }
 
+		/// <summary>
+		/// updates the thread share object with the current position of the players, ball and scores
+		/// so they can be send to the client
+		/// </summary>
 		private void UpdateClient()
 		{
 			shareObject.P1posX = players[0].Slider.Position.X;

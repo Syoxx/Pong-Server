@@ -7,11 +7,13 @@ using Microsoft.Xna.Framework;
 
 namespace Pong
 {
+	/// <summary>
+	/// class to share information between the threads(game and server/client) via getter/setter
+	/// it is accessible from the game and the server/client
+	/// stores the informations regarding players/ball/score
+	/// </summary>
 	public class ThreadShareObject
 	{
-		public Vector2 p1pos;
-		public Vector2 p2pos;
-		public Vector2 ballPos;
 		public float p1posX;
 		public float p1posY;
 		public float p2posX;
@@ -30,12 +32,6 @@ namespace Pong
 			set { pwdAccepted = value; }
 		}
 
-		public Vector2 P1pos
-		{
-			get { return p1pos; }
-			set { p1pos = value; }
-		}
-
 		public float P1posX
 		{
 			get { return p1posX; }
@@ -48,12 +44,6 @@ namespace Pong
 			set { p1posY = value; }
 		}
 
-		public Vector2 P2pos
-		{
-			get { return p2pos; }
-			set { p2pos = value; }
-		}
-
 		public float P2posX
 		{
 			get { return p2posX; }
@@ -64,12 +54,6 @@ namespace Pong
 		{
 			get { return p2posY; }
 			set { p2posY = value; }
-		}
-
-		public Vector2 BallPos
-		{
-			get { return ballPos; }
-			set { ballPos = value; }
 		}
 
 		public float BallPosX
@@ -110,9 +94,12 @@ namespace Pong
 
 		public ThreadShareObject()
 		{
-			p1pos = new Vector2(0, 0);
-			p2pos = new Vector2(0, 0);
-			ballPos = new Vector2(0, 0);
+			p1posX = 0;
+			p1posY = 0;
+			p2posX = 0;
+			p2posY = 0;
+			ballPosX = 0;
+			ballPosY = 0;
 			scoreP1 = 0;
 			scoreP2 = 0;
 			up = false;

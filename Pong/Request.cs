@@ -20,6 +20,12 @@ namespace Pong
 		string incorrect = "pwd incorrect";
 		private string[] splitData;
 
+		/// <summary>
+		/// analyses the data from the client and updates the thread share object accordingly
+		/// </summary>
+		/// <param name="sData">stream data</param>
+		/// <param name="share">thread share object to give revceived informations to the game</param>
+		/// <returns></returns>
 		public string RequestData(string sData, ThreadShareObject share)
 		{
 			if (sData.Contains(pwd) || sData.Contains(cmd))
@@ -49,7 +55,7 @@ namespace Pong
 					share.Up = true;
 					rData = "cmd accepted";
 				}
-				//client sent down command, moces the player object down
+				//client sent down command, moves the player object down
 				else if (content == "down")
 				{
 					//SendKeys.Send(Keys.Down.ToString());

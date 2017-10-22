@@ -2,67 +2,97 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading;
-using System.Text;
 
 namespace Pong
 {
-	public class SocketClient
+	class SocketClient
 	{
-        // Data buffer for incoming data.
-        static byte[] bytes = new byte[1024];
+		private bool cConnected;
+		private Encoding rEncoding;
+		private string data;
+		private Encoding sEncoding;
+		private string sData;
+		private string rData;
 
-        static IPHostEntry ipHostInfo;
-        static IPEndPoint remoteEP;
-        static Socket sender;
+		public SocketClient(ThreadShareObject share)
+		{
+			// Data buffer for incoming data.
+			byte[] bytes = new byte[1024];
+			//IPAddress ip = { '127.0.0.1' };
 
-        public static void StartClient()
-        {
-            // Establish the remote endpoint for the socket.
-            // This example uses port 11000 on the local computer.
-#pragma warning disable CS0618 // Typ oder Element ist veraltet
-            ipHostInfo = Dns.Resolve(Dns.GetHostName());
-#pragma warning restore CS0618 // Typ oder Element ist veraltet
-            IPAddress ipAddress = IPAddress.Parse("127.0.0.1");
-            remoteEP = new IPEndPoint(ipAddress, 11000);
+			// Connect to a remote device.
+			try
+			{
+				// Establish the remote endpoint for the socket.
+				// This example uses port 11000 on the local computer.
+				IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName());
 
-            Thread tClient = new Thread(ClientHandler);
-            tClient.Start();
+				IPAddress ipAddress = ipHostInfo.AddressList[0];
+				IPEndPoint remoteEP = new IPEndPoint(ipAddress, 11000);
 
-            // Create a TCP/IP  socket.
-            sender = new Socket(AddressFamily.InterNetwork,
-                SocketType.Stream, ProtocolType.Tcp);
-            sender.Connect(remoteEP);
-        }
+				// Create a TCP/IP  socket.
+				Socket sender = new Socket(AddressFamily.InterNetwork,
+					SocketType.Stream, ProtocolType.Tcp);
 
-        static void ClientHandler()
-        {
-            while (true)
-            {
-                try
-                {
-                    sender.Send(Encoding.UTF8.GetBytes(dataHandler));
+				// Connect the socket to the remote endpoint. Catch any errors.
+				try
+				{
+					sender.Connect(remoteEP);
 
-                    StreamWriter cWriter = new StreamWriter(clientWriter);
-                    StreamReader cReader = new StreamReader(clientReader);
-                }
+					Console.WriteLine("Socket connected to {0}",
+						sender.RemoteEndPoint.ToString());
 
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            }
+					// sets up networkstream and reader/writer to communicate with server
+					NetworkStream ns = new NetworkStream(sender);
+					StreamWriter sWriter = new StreamWriter(ns);
+					sEncoding = sWriter.Encoding;
+					Console.WriteLine(sEncoding.ToString());
+					StreamReader sReader = new StreamReader(ns);
+					rEncoding = sReader.CurrentEncoding;
+					Console.WriteLine(rEncoding.ToString());
+					//replace "hello" with pwd transmission?
+					sWriter.WriteLine("hello");
+					sWriter.Flush();
+					data = sReader.ReadLine();
+					Console.WriteLine(data);
 
-        }
-        
-        }
+					// Send the data through the socket.
+					cConnected = true;
 
-        public static int Main(String[] args)
-        {
-            StartClient();
-            return 0;
-        }
-    }
+					// Receive the response from the remote device.
+					while (cConnected)
+					{
+						sData = sReader.ReadLine();
+						StreamInClient sIn = new StreamInClient();
+						//analyzes  the incoming data and stores return value, mostly done i guess
+						rData = sIn.InData(sData, share);
+						//sends a new msg out not done yet
+						StreamOutClient sOut = new StreamOutClient();
+
+					}
+
+				}
+				catch (ArgumentNullException ane)
+				{
+					Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
+				}
+				catch (SocketException se)
+				{
+					Console.WriteLine("SocketException : {0}", se.ToString());
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine("Unexpected exception : {0}", e.ToString());
+				}
+
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e.ToString());
+			}
+		}
+	}
 }
