@@ -16,7 +16,6 @@ namespace Pong
 		private Encoding sEncoding;
 		private string sData;
 		private string rData;
-        ThreadShareObject shareObject;
 
 		public SocketClient(ThreadShareObject share)
 		{
@@ -82,19 +81,19 @@ namespace Pong
                         //    sWriter.Flush(); 
                         //}
 
-                        if (shareObject.Up == true)
+                        if (share.Up == true)
                         {
                             sWriter.WriteLine("cmd up");
                             sWriter.Flush();
-                            shareObject.Up = false;
+                            share.Up = false;
                         }
-                        else if (shareObject.Down == true)
+                        else if (share.Down == true)
                         {
                             sWriter.WriteLine("cmd down");
                             sWriter.Flush();
-                            shareObject.Down = false;
+                            share.Down = false;
                         }
-                        else if (shareObject.Up == false && shareObject.Down == false)
+                        else if (share.Up == false && share.Down == false)
                         {
                             sWriter.WriteLine("cmd update");
                             sWriter.Flush();
