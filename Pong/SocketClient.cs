@@ -70,23 +70,20 @@ namespace Pong
 						rData = sIn.InData(sData, share);
 
                         //sends the outgoing commands for moving the slider
-                            if (share.UpKey == true)
-                            {
-                                sWriter.WriteLine("cmd up");
-                                sWriter.Flush();
-                                share.UpKey = false;
-                            }
-                            else if (share.DownKey == true)
-                            {
-                                sWriter.WriteLine("cmd down");
-                                sWriter.Flush();
-                                share.DownKey = false;
-                            }
-                            else if (share.UpKey == false && share.DownKey == false)
-                            {
-                                sWriter.WriteLine("cmd update");
-                                sWriter.Flush();
-                            }
+                        if (share.UpKey == true)
+                        {
+                            sWriter.WriteLine("cmd up");
+                            sWriter.Flush();
+                            share.UpKey = false;
+                        }
+                        else if (share.DownKey == true)
+                        {
+                            sWriter.WriteLine("cmd down");
+                            sWriter.Flush();
+                            share.DownKey = false;
+                        }
+                        sWriter.WriteLine("cmd update");
+                        sWriter.Flush();
                     }
 
 				}
