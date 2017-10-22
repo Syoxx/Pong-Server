@@ -58,8 +58,6 @@ namespace Pong
 					//replace "hello" with pwd transmission?
 					sWriter.WriteLine("pwd pongPwd");
 					sWriter.Flush();
-					data = sReader.ReadLine();
-					Console.WriteLine(data);
 
 					// Send the data through the socket.
 					cConnected = true;
@@ -68,6 +66,7 @@ namespace Pong
                     while (cConnected)
 					{
 						sData = sReader.ReadLine();
+						Console.WriteLine(sData);
 						StreamInClient sIn = new StreamInClient();
 						//analyzes  the incoming data and stores return value, mostly done i guess
 						rData = sIn.InData(sData, share);
