@@ -74,8 +74,6 @@ namespace Pong
                         StreamOutClient sOut = new StreamOutClient();
 
                         //sends the outgoing commands for moving the slider
-                        while (share.State == GameState.Started)
-                        {
                             if (share.UpKey == true)
                             {
                                 sWriter.WriteLine("cmd up");
@@ -93,7 +91,6 @@ namespace Pong
                                 sWriter.WriteLine("cmd update");
                                 sWriter.Flush();
                             }
-                        }
                     }
 
 				}

@@ -11,7 +11,9 @@ namespace Pong
         private Keys upKey;
         private Keys downKey;
 		ThreadShareObject shareObject;
-        private Slider slider;
+		private bool isPlayer;
+		private bool isServer;
+		private Slider slider;
         private int points;
         private Rectangle endZone;
 
@@ -35,7 +37,7 @@ namespace Pong
             { return playerInex; }
         }
 
-        public Player(PlayerIndex playerIndex, Vector2 position, Texture2D texture, Vector2 size, Keys upKey, Keys downKey, ThreadShareObject share, Rectangle endZone, float fieldMinY, float fieldMaxY)
+        public Player(PlayerIndex playerIndex, Vector2 position, Texture2D texture, Vector2 size, Keys upKey, Keys downKey, ThreadShareObject share, Rectangle endZone, float fieldMinY, float fieldMaxY, bool isPlayer, bool isServer)
         {
             this.playerInex = playerIndex;
             this.slider = new Slider(position, texture, size, fieldMinY, fieldMaxY);
@@ -44,15 +46,19 @@ namespace Pong
             this.downKey = downKey;
             this.endZone = endZone;
             this.shareObject = share;
+			this.isPlayer = isPlayer;
+			this.isServer = isServer;
         }
 
-		public Player(PlayerIndex playerIndex, Vector2 position, Texture2D texture, Vector2 size, ThreadShareObject share, Rectangle endZone, float fieldMinY, float fieldMaxY)
+		public Player(PlayerIndex playerIndex, Vector2 position, Texture2D texture, Vector2 size, ThreadShareObject share, Rectangle endZone, float fieldMinY, float fieldMaxY, bool isPlayer, bool isServer)
 		{
 			this.playerInex = playerIndex;
 			this.slider = new Slider(position, texture, size, fieldMinY, fieldMaxY);
 			this.points = 0;
 			this.shareObject = share;
 			this.endZone = endZone;
+			this.isPlayer = isPlayer;
+			this.isServer = isServer;
 		}
 
 		public void Update(GameTime gameTime)
@@ -60,24 +66,55 @@ namespace Pong
             KeyboardState state = Keyboard.GetState();
             GamePadState padState = GamePad.GetState(playerInex);
             slider.ResetMoveVector();
-            if(state.IsKeyDown(upKey) || padState.ThumbSticks.Left.Y < 0 || shareObject.Up)
-            {
-                if (padState.ThumbSticks.Left.Y < 0)
-                    slider.Move(-1, padState.ThumbSticks.Left.Y);
-                else
-                    slider.Move(-1, 1);
+			if (isPlayer)
+			{
+				if (state.IsKeyDown(upKey) || padState.ThumbSticks.Left.Y < 0)
+				{
+					if (padState.ThumbSticks.Left.Y < 0)
+						slider.Move(-1, padState.ThumbSticks.Left.Y);
+					else
+						slider.Move(-1, 1);
 
-				shareObject.Up = false;
-            }
-            if(state.IsKeyDown(downKey) || padState.ThumbSticks.Right.Y > 0 || shareObject.Down)
-            {
-                if (padState.ThumbSticks.Left.Y > 0)
-                    slider.Move(1, padState.ThumbSticks.Left.Y);
-                else
-                    slider.Move(1,1);
+					if (!isServer)
+					{
+						shareObject.UpKey = true;
+					}
+				}
+				if (state.IsKeyDown(downKey) || padState.ThumbSticks.Right.Y > 0)
+				{
+					if (padState.ThumbSticks.Left.Y > 0)
+						slider.Move(1, padState.ThumbSticks.Left.Y);
+					else
+						slider.Move(1, 1);
 
-				shareObject.Down = false;
-            }
+					if (!isServer)
+					{
+						shareObject.DownKey = true;
+					}
+				}
+			}
+
+			else
+			{
+				if (shareObject.Up)
+				{
+					if (padState.ThumbSticks.Left.Y < 0)
+						slider.Move(-1, padState.ThumbSticks.Left.Y);
+					else
+						slider.Move(-1, 1);
+
+					shareObject.Up = false;
+				}
+				if (shareObject.Down)
+				{
+					if (padState.ThumbSticks.Left.Y > 0)
+						slider.Move(1, padState.ThumbSticks.Left.Y);
+					else
+						slider.Move(1, 1);
+
+					shareObject.Down = false;
+				}
+			}
 
             slider.Update(gameTime);
         }

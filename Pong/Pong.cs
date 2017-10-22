@@ -42,7 +42,6 @@ namespace Pong
 		KeyboardState oldState, newState;
         Boolean serverRunning = false;
         Boolean clientRunning = false;
-        private ThreadShareObject share;
 
         /// <summary>
         /// initiates the server
@@ -270,10 +269,12 @@ namespace Pong
                     sliderSize,
                     Keys.W,
                     Keys.S,
-                    share,
+                    shareObject,
 					new Rectangle(-500 - Convert.ToInt32(ballSize.X), -200, 500, graphics.PreferredBackBufferHeight + 400),
 					0,
-					graphics.PreferredBackBufferHeight);
+					graphics.PreferredBackBufferHeight,
+					true,
+					isServer);
 			}
 
 			else
@@ -285,7 +286,9 @@ namespace Pong
 					shareObject,
 					new Rectangle(-500 - Convert.ToInt32(ballSize.X), -200, 500, graphics.PreferredBackBufferHeight + 400),
 					0,
-					graphics.PreferredBackBufferHeight);
+					graphics.PreferredBackBufferHeight,
+					false,
+					isServer);
 			}
 
 			if (isServer)
@@ -297,7 +300,9 @@ namespace Pong
 					shareObject,
 					new Rectangle(graphics.PreferredBackBufferWidth + Convert.ToInt32(ballSize.X), -200, 500, graphics.PreferredBackBufferHeight + 400),
 					0,
-					graphics.PreferredBackBufferHeight);
+					graphics.PreferredBackBufferHeight,
+					false,
+					isServer);
 			}
 
 			else
@@ -308,10 +313,12 @@ namespace Pong
 					sliderSize,
 					Keys.Up,
 					Keys.Down,
-                    share,
+                    shareObject,
 					new Rectangle(graphics.PreferredBackBufferWidth + Convert.ToInt32(ballSize.X), -200, 500, graphics.PreferredBackBufferHeight + 400),
 					0,
-					graphics.PreferredBackBufferHeight);
+					graphics.PreferredBackBufferHeight,
+					true,
+					isServer);
 			}
 
             players[0].OnLeft += Player_OnLeft;
